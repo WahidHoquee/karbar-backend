@@ -21,4 +21,4 @@ app.use(controlRoute)
 app.use(formPostRoute)
 app.use(reportRoute)
 
-app.listen(8080)
+app.listen(process.env.PORT || 8080)
