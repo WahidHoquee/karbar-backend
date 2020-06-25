@@ -7,7 +7,8 @@ const formPostRoute = require('./routes/formPost');
 const reportRoute = require('./routes/report');
 
 const app = express()
-
+// console.log(app)
+console.log(express.request)
 app.use(bodyParser.json())
 app.use((req,res,next) => {
     res.setHeader('Access-Control-Allow-Origin', '*')
