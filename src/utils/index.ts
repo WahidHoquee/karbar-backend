@@ -1,0 +1,22 @@
+import { readFileSync } from "fs";
+import { placeholders } from './interface'
+import { join, parse, dirname } from "path";
+
+const getSqlQuery = (fileName: string): string => {
+    const path = join(dirname(__dirname), "..", "sql", `${fileName}.sql`);
+    const query = readFileSync(path, { encoding: "utf-8" });
+    return query;
+};
+
+
+const formatSql = (sql: string, placeholders: placeholders): string => {
+    for(let key in placeholders){
+        sql = sql.replace( `@${key}`, `'${placeholders[key]}'` )
+    }
+    return sql;
+}
+
+export {
+    getSqlQuery,
+    formatSql
+}

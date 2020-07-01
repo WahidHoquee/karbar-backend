@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
+// Collecting data from ENV 
 const {
 	PORT,
 	SQL_SERVER,
@@ -14,12 +15,13 @@ const {
 	SQL_PORT,
 } = process.env;
 
+// Checking if the following values are available with the error messages,if they are not available
 assert(PORT, "PORT configuration is required.");
 assert(SQL_SERVER, "SQL_SERVER configuration is required.");
 assert(SQL_DATABASE, "SQL_DATABASE configuration is required.");
 assert(SQL_USER, "SQL_USER configuration is required.");
 assert(SQL_PASSWORD, "SQL_PASSWORD configuration is required.");
-assert(SQL_PORT, "SQL_PORT configuration is required.");
+// assert(SQL_PORT, "SQL_PORT configuration is required.");
 
 module.exports = {
 	port: PORT,
@@ -28,6 +30,6 @@ module.exports = {
 		database: SQL_DATABASE,
 		user: SQL_USER,
 		password: SQL_PASSWORD,
-		port: parseInt(SQL_PORT),
+		// port: parseInt(SQL_PORT),
 	}
 };
