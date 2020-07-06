@@ -38,9 +38,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getSubControls = exports.getControls = void 0;
 var utils_1 = require("../utils");
-var getConnection = require('../data');
+var getConnection = require('../database/connection');
+// Promise<dControl[] | undefined>
 var getControls = function (ClientCode, ModuleCode, MenuParams) { return __awaiter(void 0, void 0, void 0, function () {
-    var sql, pool, request, records, err_1;
+    var sql, pool, request;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, utils_1.getSqlQuery("get_Control")];
@@ -53,24 +54,21 @@ var getControls = function (ClientCode, ModuleCode, MenuParams) { return __await
                 return [4 /*yield*/, pool.request()];
             case 3:
                 request = _a.sent();
-                _a.label = 4;
-            case 4:
-                _a.trys.push([4, 6, , 7]);
-                return [4 /*yield*/, request.query(sql)];
-            case 5:
-                records = _a.sent();
-                return [2 /*return*/, records.recordset];
-            case 6:
-                err_1 = _a.sent();
-                console.log('Cant retrieve data');
-                return [3 /*break*/, 7];
-            case 7: return [2 /*return*/];
+                request.stream = true;
+                request.query(sql);
+                request.on('row', function (row) {
+                    // console.log(row)
+                });
+                request.on('done', function (result) {
+                    console.log(result);
+                });
+                return [2 /*return*/];
         }
     });
 }); };
 exports.getControls = getControls;
 var getSubControls = function (query, placeholders) { return __awaiter(void 0, void 0, void 0, function () {
-    var sql, pool, request, records, err_2;
+    var sql, pool, request, records, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -89,7 +87,7 @@ var getSubControls = function (query, placeholders) { return __awaiter(void 0, v
                 records = _a.sent();
                 return [2 /*return*/, [sql, records.recordset]];
             case 5:
-                err_2 = _a.sent();
+                err_1 = _a.sent();
                 console.log('Cant retrieve data');
                 return [3 /*break*/, 6];
             case 6: return [2 /*return*/];

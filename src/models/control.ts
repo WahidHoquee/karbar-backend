@@ -1,6 +1,7 @@
 import { getSqlQuery, formatSql } from '../utils'
 import { placeholders, records } from '../utils/interface'
-const getConnection = require('../data');
+import { Request, ConnectionPool } from 'mssql';
+const getConnection = require('../database/connection');
 
 export interface dControl {
   ControlName: string | null;
@@ -27,16 +28,16 @@ export interface dControl {
   LCode: string | null;
   Params?: dControlParams[]
 }
-
-const getControls = async(ClientCode: string, ModuleCode: string, MenuParams: string): Promise<dControl[] | undefined> => {
+// Promise<dControl[] | undefined>
+const getControls = async(ClientCode: string, ModuleCode: string, MenuParams: string) : Promise<any> => {
   let sql = await getSqlQuery("get_Control");
   sql = formatSql(sql, { ClientCode, ModuleCode, MenuParams })
   
-  const pool = await getConnection();
-  const request = await pool.request();
-
+  const pool: ConnectionPool = await getConnection();
+  const request: Request = await pool.request();
+  
   try{
-    let records: records<dControl> = await request.query(sql);
+    // let records: records<dControl> = await request.query(sql);
     return records.recordset;
   }
   catch(err){

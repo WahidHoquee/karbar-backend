@@ -1,7 +1,7 @@
 import { getSqlQuery, formatSql } from '../utils';
 import { records } from '../utils/interface'
 
-const getConnection = require('../data');
+const getConnection = require('../database/connection');
 
 export interface dMenu{
   ACode: string | null;

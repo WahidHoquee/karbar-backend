@@ -38,7 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getMenu = void 0;
 var utils_1 = require("../utils");
-var getConnection = require('../data');
+var getConnection = require('../database/connection');
 var getMenu = function (ClientCode, ModuleCode, MenuType) { return __awaiter(void 0, void 0, void 0, function () {
     var sql, pool, request, records, err_1;
     return __generator(this, function (_a) {

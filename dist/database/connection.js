@@ -35,65 +35,75 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getSubControls = exports.getControls = void 0;
-var utils_1 = require("../utils");
-var getConnection = require('../data');
-var getControls = function (ClientCode, ModuleCode, MenuParams) { return __awaiter(void 0, void 0, void 0, function () {
-    var sql, pool, request, records, err_1;
+var mssql_1 = __importDefault(require("mssql"));
+var config = require("../config");
+var getConnection = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var pool, closePool, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, utils_1.getSqlQuery("get_Control")];
+            case 0:
+                pool = null;
+                closePool = function () { return __awaiter(void 0, void 0, void 0, function () {
+                    var _a, err_2;
+                    return __generator(this, function (_b) {
+                        switch (_b.label) {
+                            case 0:
+                                _b.trys.push([0, 3, , 4]);
+                                _a = pool;
+                                if (!_a) return [3 /*break*/, 2];
+                                return [4 /*yield*/, pool.close()];
+                            case 1:
+                                _a = (_b.sent());
+                                _b.label = 2;
+                            case 2:
+                                _a;
+                                pool = null;
+                                return [3 /*break*/, 4];
+                            case 3:
+                                err_2 = _b.sent();
+                                pool = null;
+                                console.log("Cant close the pool, Maybe Pool is already closed");
+                                return [3 /*break*/, 4];
+                            case 4: return [2 /*return*/];
+                        }
+                    });
+                }); };
+                _a.label = 1;
             case 1:
-                sql = _a.sent();
-                sql = utils_1.formatSql(sql, { ClientCode: ClientCode, ModuleCode: ModuleCode, MenuParams: MenuParams });
-                return [4 /*yield*/, getConnection()];
+                _a.trys.push([1, 6, , 7]);
+                return [4 /*yield*/, new mssql_1.default.ConnectionPool(config.sql)];
             case 2:
                 pool = _a.sent();
-                return [4 /*yield*/, pool.request()];
-            case 3:
-                request = _a.sent();
-                _a.label = 4;
+                if (!pool) return [3 /*break*/, 4];
+                pool.on("error", function (err) { return __awaiter(void 0, void 0, void 0, function () {
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0:
+                                console.log("Connection Error, Closing the Pool" + err);
+                                return [4 /*yield*/, closePool()];
+                            case 1:
+                                _a.sent();
+                                return [2 /*return*/];
+                        }
+                    });
+                }); });
+                return [4 /*yield*/, pool.connect()];
+            case 3: return [2 /*return*/, _a.sent()];
             case 4:
-                _a.trys.push([4, 6, , 7]);
-                return [4 /*yield*/, request.query(sql)];
-            case 5:
-                records = _a.sent();
-                return [2 /*return*/, records.recordset];
+                console.error('No Existing Pool Available');
+                _a.label = 5;
+            case 5: return [3 /*break*/, 7];
             case 6:
                 err_1 = _a.sent();
-                console.log('Cant retrieve data');
+                console.log("Error connnecting to the SQL Server" + err_1);
+                pool = null;
                 return [3 /*break*/, 7];
             case 7: return [2 /*return*/];
         }
     });
 }); };
-exports.getControls = getControls;
-var getSubControls = function (query, placeholders) { return __awaiter(void 0, void 0, void 0, function () {
-    var sql, pool, request, records, err_2;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                sql = utils_1.formatSql(query, placeholders);
-                return [4 /*yield*/, getConnection()];
-            case 1:
-                pool = _a.sent();
-                return [4 /*yield*/, pool.request()];
-            case 2:
-                request = _a.sent();
-                _a.label = 3;
-            case 3:
-                _a.trys.push([3, 5, , 6]);
-                return [4 /*yield*/, request.query(sql)];
-            case 4:
-                records = _a.sent();
-                return [2 /*return*/, [sql, records.recordset]];
-            case 5:
-                err_2 = _a.sent();
-                console.log('Cant retrieve data');
-                return [3 /*break*/, 6];
-            case 6: return [2 /*return*/];
-        }
-    });
-}); };
-exports.getSubControls = getSubControls;
+module.exports = getConnection;
