@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { dControl, getControls, getSubControls } from "../models/controls";
+import { dControl, getControls, getSubControls } from "../models/control";
 import { placeholders } from "../utils/interface";
 
 type fetchedControl = dControl[] | undefined;
@@ -38,6 +38,7 @@ const fetchControl: RequestHandler<params> = async (req, res) => {
             return dt;
         });
         data = await Promise.all(controls);
+        console.log('data')
         res.status(200).json(data);
     } 
     else {

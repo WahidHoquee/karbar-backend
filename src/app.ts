@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 
 import menuRoute from './routes/menu';
 import formRoute from './routes/form';
+import usersRoute from './routes/users'
 // import bookmarksRoute from './routes/bookmark';
 // import dashboardRoute from './routes/dashboard';
 
@@ -25,7 +26,7 @@ app.use((req, res, next) => {
 
 app.use('/api/menu', menuRoute);
 app.use('/api/form', formRoute);
-// app.use(formPostRoute);
+app.use('/api/users',usersRoute);
 // app.use(reportRoute);
 
 app.listen(process.env.PORT || 8080);
