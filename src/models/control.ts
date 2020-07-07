@@ -1,7 +1,8 @@
 import { getSqlQuery, formatSql } from '../utils'
 import { placeholders, records } from '../utils/interface'
+
 import { Request, ConnectionPool } from 'mssql';
-const getConnection = require('../database/connection');
+import { getConnection } from '../database/connection'
 
 export interface dControl {
   ControlName: string | null;
@@ -28,20 +29,25 @@ export interface dControl {
   LCode: string | null;
   Params?: dControlParams[]
 }
-// Promise<dControl[] | undefined>
-const getControls = async(ClientCode: string, ModuleCode: string, MenuParams: string) : Promise<any> => {
+
+const getControls = async(ClientCode: string, ModuleCode: string, MenuParams: string) : Promise<dControl[] | null> => {
   let sql = await getSqlQuery("get_Control");
   sql = formatSql(sql, { ClientCode, ModuleCode, MenuParams })
   
-  const pool: ConnectionPool = await getConnection();
-  const request: Request = await pool.request();
-  
-  try{
-    // let records: records<dControl> = await request.query(sql);
-    return records.recordset;
+  const pool: ConnectionPool | null = await getConnection();
+  if(pool){
+    const request: Request = await pool.request();
+    try{
+      let records: records<dControl> = await request.query(sql);
+      return records.recordset;
+    }
+    catch(err){
+      console.log('Cant retrieve data')
+      return null;
+    }
   }
-  catch(err){
-    console.log('Cant retrieve data')
+  else{
+    return null;
   }
 }
 
@@ -55,14 +61,16 @@ const getSubControls = async(query: string, placeholders: placeholders): Promise
   let sql = formatSql(query, placeholders);
 
   const pool = await getConnection();
-  const request = await pool.request();
+  if(pool){
+    const request = await pool.request();
 
-  try{
-    let records: records<dControlParams> = await request.query(sql);
-    return [ sql, records.recordset ] ;
-  }
-  catch(err){
-    console.log('Cant retrieve data')
+    try{
+      let records: records<dControlParams> = await request.query(sql);
+      return [ sql, records.recordset ] ;
+    }
+    catch(err){
+      console.log('Cant retrieve data')
+    }
   }
 }
 

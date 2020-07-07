@@ -38,44 +38,50 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getSubControls = exports.getControls = void 0;
 var utils_1 = require("../utils");
-var getConnection = require('../database/connection');
-// Promise<dControl[] | undefined>
+var connection_1 = require("../database/connection");
 var getControls = function (ClientCode, ModuleCode, MenuParams) { return __awaiter(void 0, void 0, void 0, function () {
-    var sql, pool, request;
+    var sql, pool, request, records, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, utils_1.getSqlQuery("get_Control")];
             case 1:
                 sql = _a.sent();
                 sql = utils_1.formatSql(sql, { ClientCode: ClientCode, ModuleCode: ModuleCode, MenuParams: MenuParams });
-                return [4 /*yield*/, getConnection()];
+                return [4 /*yield*/, connection_1.getConnection()];
             case 2:
                 pool = _a.sent();
+                if (!pool) return [3 /*break*/, 8];
                 return [4 /*yield*/, pool.request()];
             case 3:
                 request = _a.sent();
-                request.stream = true;
-                request.query(sql);
-                request.on('row', function (row) {
-                    // console.log(row)
-                });
-                request.on('done', function (result) {
-                    console.log(result);
-                });
-                return [2 /*return*/];
+                _a.label = 4;
+            case 4:
+                _a.trys.push([4, 6, , 7]);
+                return [4 /*yield*/, request.query(sql)];
+            case 5:
+                records = _a.sent();
+                return [2 /*return*/, records.recordset];
+            case 6:
+                err_1 = _a.sent();
+                console.log('Cant retrieve data');
+                return [2 /*return*/, null];
+            case 7: return [3 /*break*/, 9];
+            case 8: return [2 /*return*/, null];
+            case 9: return [2 /*return*/];
         }
     });
 }); };
 exports.getControls = getControls;
 var getSubControls = function (query, placeholders) { return __awaiter(void 0, void 0, void 0, function () {
-    var sql, pool, request, records, err_1;
+    var sql, pool, request, records, err_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 sql = utils_1.formatSql(query, placeholders);
-                return [4 /*yield*/, getConnection()];
+                return [4 /*yield*/, connection_1.getConnection()];
             case 1:
                 pool = _a.sent();
+                if (!pool) return [3 /*break*/, 6];
                 return [4 /*yield*/, pool.request()];
             case 2:
                 request = _a.sent();
@@ -87,7 +93,7 @@ var getSubControls = function (query, placeholders) { return __awaiter(void 0, v
                 records = _a.sent();
                 return [2 /*return*/, [sql, records.recordset]];
             case 5:
-                err_1 = _a.sent();
+                err_2 = _a.sent();
                 console.log('Cant retrieve data');
                 return [3 /*break*/, 6];
             case 6: return [2 /*return*/];

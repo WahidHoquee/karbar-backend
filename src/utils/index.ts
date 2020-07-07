@@ -2,8 +2,8 @@ import { readFileSync } from "fs";
 import { placeholders } from './interface'
 import { join, parse, dirname } from "path";
 
-const getSqlQuery = (fileName: string): string => {
-    const path = join(dirname(__dirname), "..", "sql", `${fileName}.sql`);
+const getSqlQuery = (fileName: string, subPath: string = ''): string => {
+    const path = join(dirname(__dirname), "..", "sql", subPath, `${fileName}.sql`);
     const query = readFileSync(path, { encoding: "utf-8" });
     return query;
 };

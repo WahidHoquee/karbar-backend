@@ -4,4 +4,5 @@ var express_1 = require("express");
 var users_1 = require("../controllers/users");
 var user = express_1.Router();
 user.post("/", users_1.registerUser);
+user.get("/me", users_1.getCurrentUserInfo);
 exports.default = user;

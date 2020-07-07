@@ -1,0 +1,10 @@
+{
+	"name": "Karbar ERP - Development",
+	"jwtPrivateKey": "B@ngl@d3sh",
+    "sql": {
+		"server": "DESKTOP-U8FJOIL",
+		"database": "_kb20",
+		"user": "wahid1997",
+		"password": "wahid1997"
+    }
+}

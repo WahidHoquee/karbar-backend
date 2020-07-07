@@ -1,7 +1,7 @@
 import { getSqlQuery, formatSql } from '../utils';
 import { records } from '../utils/interface'
-
-const getConnection = require('../database/connection');
+import { Request, ConnectionPool } from 'mssql';
+import { getConnection } from '../database/connection'
 
 export interface dMenu{
   ACode: string | null;
@@ -15,19 +15,24 @@ export interface dMenu{
   DisplayField: string | null;
 }
 
-const getMenu = async(ClientCode: string, ModuleCode: string, MenuType: string) => {
+const getMenu = async(ClientCode: string, ModuleCode: string, MenuType: string) : Promise<dMenu[] | null> => {
   let sql = await getSqlQuery('get_Menu');
   sql = formatSql(sql, { ClientCode, ModuleCode, MenuType })
   
-  const pool = await getConnection();
-  const request = await pool.request();
-  
-  try{
-    let records: records<dMenu> = await request.query(sql);
-    return records.recordset;
+  const pool: ConnectionPool | null = await getConnection();
+  if(pool){
+    const request: Request = await pool.request();
+    try{
+      let records: records<dMenu> = await request.query(sql);
+      return records.recordset;
+    }
+    catch(err){
+      console.log('Cant retrieve data')
+      return null;
+    }
   }
-  catch(err){
-    console.log('Cant retrieve data')
+  else{
+    return null;
   }
 }
 

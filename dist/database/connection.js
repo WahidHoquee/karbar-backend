@@ -39,6 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getConnection = void 0;
 var mssql_1 = __importDefault(require("mssql"));
 var config = require("../config");
 var getConnection = function () { return __awaiter(void 0, void 0, void 0, function () {
@@ -62,12 +63,12 @@ var getConnection = function () { return __awaiter(void 0, void 0, void 0, funct
                             case 2:
                                 _a;
                                 pool = null;
-                                return [3 /*break*/, 4];
+                                return [2 /*return*/, pool];
                             case 3:
                                 err_2 = _b.sent();
                                 pool = null;
                                 console.log("Cant close the pool, Maybe Pool is already closed");
-                                return [3 /*break*/, 4];
+                                return [2 /*return*/, pool];
                             case 4: return [2 /*return*/];
                         }
                     });
@@ -95,15 +96,15 @@ var getConnection = function () { return __awaiter(void 0, void 0, void 0, funct
             case 3: return [2 /*return*/, _a.sent()];
             case 4:
                 console.error('No Existing Pool Available');
-                _a.label = 5;
+                return [2 /*return*/, null];
             case 5: return [3 /*break*/, 7];
             case 6:
                 err_1 = _a.sent();
                 console.log("Error connnecting to the SQL Server" + err_1);
                 pool = null;
-                return [3 /*break*/, 7];
+                return [2 /*return*/, pool];
             case 7: return [2 /*return*/];
         }
     });
 }); };
-module.exports = getConnection;
+exports.getConnection = getConnection;

@@ -1,8 +1,10 @@
 import { Router } from "express";
-import { registerUser } from '../controllers/users'
+import { registerUser, getCurrentUserInfo } from '../controllers/users'
 
 const user = Router();
 
 user.post("/", registerUser);
+
+user.get("/me", getCurrentUserInfo);
 
 export default user;

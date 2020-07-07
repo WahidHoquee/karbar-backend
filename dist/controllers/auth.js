@@ -39,59 +39,45 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.fetchControl = void 0;
+exports.authUser = void 0;
 var joi_1 = __importDefault(require("@hapi/joi"));
+var jsonwebtoken_1 = require("jsonwebtoken");
 var lodash_1 = require("lodash");
-var control_1 = require("../models/control");
-var fetchControl = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var error, data, controls;
+var user_1 = require("../models/user");
+var bcrypt = require('bcrypt');
+var config = require('config');
+var authUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var error, user, validPassword, payload, token;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                error = validate(req.params).error;
+                error = validate(req.body).error;
                 if (error)
                     return [2 /*return*/, res.status(400).send(error.details[0].message)];
-                return [4 /*yield*/, control_1.getControls('0010', '0100', req.params.menuParams)];
+                return [4 /*yield*/, user_1.findUserByEmail(req.body.Email)];
             case 1:
-                data = _a.sent();
-                if (!data) return [3 /*break*/, 4];
-                return [4 /*yield*/, data.map(function (dt) { return __awaiter(void 0, void 0, void 0, function () {
-                        var placeholders, records;
-                        return __generator(this, function (_a) {
-                            switch (_a.label) {
-                                case 0:
-                                    if (!dt.ControlSQL) return [3 /*break*/, 2];
-                                    placeholders = lodash_1.pick(dt, ['ClientCode', 'ModuleCode', 'GCode', 'GLevel', 'AType', 'ADType', 'TType', 'TDType', 'VDType', 'VType', 'ACode', 'UIType', 'ALevel', 'PCode', 'LCode']);
-                                    return [4 /*yield*/, control_1.getSubControls(dt.ControlSQL, placeholders)];
-                                case 1:
-                                    records = _a.sent();
-                                    if (records) {
-                                        dt.ControlSQL = records[0];
-                                        dt.Params = records[1];
-                                    }
-                                    _a.label = 2;
-                                case 2: return [2 /*return*/, dt];
-                            }
-                        });
-                    }); })];
+                user = _a.sent();
+                if (user && user.length === 0)
+                    return [2 /*return*/, res.status(400).send("Invalid email or password")];
+                if (!user) return [3 /*break*/, 3];
+                return [4 /*yield*/, bcrypt.compare(req.body.UserPass, user[0].UserPass)];
             case 2:
-                controls = _a.sent();
-                return [4 /*yield*/, Promise.all(controls)];
-            case 3:
-                data = _a.sent();
-                res.status(200).json(data);
-                return [3 /*break*/, 5];
-            case 4:
-                res.status(404).send("Cant retrieve data");
-                _a.label = 5;
-            case 5: return [2 /*return*/];
+                validPassword = _a.sent();
+                if (!validPassword)
+                    return [2 /*return*/, res.status(400).send("Invalid email or password")];
+                payload = lodash_1.pick(user[0], ['ClientCode', 'ModuleCode', 'LCode', 'ACode', 'GroupName', 'UserName', 'Email']);
+                token = jsonwebtoken_1.sign(payload, config.get('jwtPrivateKey'));
+                res.send(token);
+                _a.label = 3;
+            case 3: return [2 /*return*/];
         }
     });
 }); };
-exports.fetchControl = fetchControl;
+exports.authUser = authUser;
 function validate(input) {
     var schema = joi_1.default.object({
-        menuParams: joi_1.default.string().min(3).pattern(/^[aA-zZ]+$/).required()
+        Email: joi_1.default.string().email().required(),
+        UserPass: joi_1.default.string().min(5).pattern(/^[A-Z][aA-zZ]+$/).required(),
     });
     return schema.validate(input);
 }

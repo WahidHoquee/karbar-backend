@@ -38,7 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getMenu = void 0;
 var utils_1 = require("../utils");
-var getConnection = require('../database/connection');
+var connection_1 = require("../database/connection");
 var getMenu = function (ClientCode, ModuleCode, MenuType) { return __awaiter(void 0, void 0, void 0, function () {
     var sql, pool, request, records, err_1;
     return __generator(this, function (_a) {
@@ -47,9 +47,10 @@ var getMenu = function (ClientCode, ModuleCode, MenuType) { return __awaiter(voi
             case 1:
                 sql = _a.sent();
                 sql = utils_1.formatSql(sql, { ClientCode: ClientCode, ModuleCode: ModuleCode, MenuType: MenuType });
-                return [4 /*yield*/, getConnection()];
+                return [4 /*yield*/, connection_1.getConnection()];
             case 2:
                 pool = _a.sent();
+                if (!pool) return [3 /*break*/, 8];
                 return [4 /*yield*/, pool.request()];
             case 3:
                 request = _a.sent();
@@ -63,8 +64,10 @@ var getMenu = function (ClientCode, ModuleCode, MenuType) { return __awaiter(voi
             case 6:
                 err_1 = _a.sent();
                 console.log('Cant retrieve data');
-                return [3 /*break*/, 7];
-            case 7: return [2 /*return*/];
+                return [2 /*return*/, null];
+            case 7: return [3 /*break*/, 9];
+            case 8: return [2 /*return*/, null];
+            case 9: return [2 /*return*/];
         }
     });
 }); };

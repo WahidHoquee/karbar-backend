@@ -1,17 +1,19 @@
 import sql, { ConnectionPool, ConnectionError, config } from 'mssql'
 const config = require("../config");
 
-const getConnection = async () => {
+const getConnection = async () : Promise<ConnectionPool | null> => {
     let pool: ConnectionPool | null = null;
 
     const closePool = async () => {
         try {
             pool && await pool.close();
             pool = null;
+            return pool;
         } 
         catch (err) {
             pool = null;
             console.log("Cant close the pool, Maybe Pool is already closed");
+            return pool;
         }
     };
 
@@ -25,13 +27,15 @@ const getConnection = async () => {
             return await pool.connect();
         }
         else{
-            console.error('No Existing Pool Available')
+            console.error('No Existing Pool Available');
+            return null;
         }
     } 
     catch (err) {
         console.log("Error connnecting to the SQL Server" + err);
         pool = null;
+        return pool;
     }
 };
 
-module.exports = getConnection;
+export {getConnection};

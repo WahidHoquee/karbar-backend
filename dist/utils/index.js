@@ -3,8 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.formatSql = exports.getSqlQuery = void 0;
 var fs_1 = require("fs");
 var path_1 = require("path");
-var getSqlQuery = function (fileName) {
-    var path = path_1.join(path_1.dirname(__dirname), "..", "sql", fileName + ".sql");
+var getSqlQuery = function (fileName, subPath) {
+    if (subPath === void 0) { subPath = ''; }
+    var path = path_1.join(path_1.dirname(__dirname), "..", "sql", subPath, fileName + ".sql");
     var query = fs_1.readFileSync(path, { encoding: "utf-8" });
     return query;
 };
