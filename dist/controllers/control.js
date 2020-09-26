@@ -51,8 +51,7 @@ var fetchControl = function (req, res) { return __awaiter(void 0, void 0, void 0
                 error = validate(req.params).error;
                 if (error)
                     return [2 /*return*/, res.status(400).send(error.details[0].message)];
-                MenuParams = req.params.menuParams + req.body.tabParams;
-                console.log(MenuParams);
+                MenuParams = req.params.menuParams;
                 if (req.body.tabParams) {
                     MenuParams = req.params.menuParams + req.body.tabParams;
                 }

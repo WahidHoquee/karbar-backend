@@ -11,8 +11,9 @@ const fetchControl: RequestHandler<params> = async (req, res) => {
     const { error } = validate(req.params);
     if(error) return res.status(400).send(error.details[0].message);
 
-    let MenuParams: string = req.params.menuParams + req.body.tabParams;
-    console.log(MenuParams)
+    //* Prev State =>  let MenuParams: string = req.params.menuParams + req.body.tabParams;+
+    let MenuParams: string = req.params.menuParams;
+
     if(req.body.tabParams){
         MenuParams= req.params.menuParams + req.body.tabParams
     }
