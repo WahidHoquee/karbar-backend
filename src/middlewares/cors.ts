@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 
 function cors(req: Request, res: Response, next: NextFunction) {
+    // console.log(req.body)
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader(
         "Access-Control-Allow-Methods",

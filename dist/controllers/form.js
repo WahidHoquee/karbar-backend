@@ -35,21 +35,22 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.fetchMenu = void 0;
-var menu_1 = require("../models/menu");
-var fetchMenu = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var data;
+exports.postForm = void 0;
+var joi_1 = __importDefault(require("@hapi/joi"));
+var postForm = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, menu_1.getMenu("0010", "0100", "WA")];
-            case 1:
-                data = _a.sent();
-                if (data) {
-                    res.status(200).json(data);
-                }
-                return [2 /*return*/];
-        }
+        console.log(req.body);
+        return [2 /*return*/];
     });
 }); };
-exports.fetchMenu = fetchMenu;
+exports.postForm = postForm;
+function validate(input) {
+    var schema = joi_1.default.object({
+        menuParams: joi_1.default.string().min(3).pattern(/^[aA-zZ]+$/).required()
+    });
+    return schema.validate(input);
+}

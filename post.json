@@ -1,0 +1,46 @@
+{
+  "gridControls": [
+    {
+      "key": "790fac2d-2d00-4edc-9d4a-136fc4e47ac0",
+      "cboVType": "CP",
+      "dtpVDate": "2020-08-05T09:32:00.000Z",
+      "cboCSCode": "2115004",
+      "txtChqNo": "5465456313248674",
+      "dtpChqDate": "2020-08-27T09:32:00.000Z",
+      "cboFPeriod": "None",
+      "txtVDesc": "DBBL",
+      "cboACode": "040100200060007",
+      "txtIDesc": "For Security Purpose",
+      "decDebit": "5600",
+      "decCredit": ""
+    },
+    {
+      "key": "9e15069e-de05-40ca-b8f4-18c5afbc6f4d",
+      "cboVType": "CP",
+      "dtpVDate": "2020-08-05T09:32:00.000Z",
+      "cboCSCode": "2115004",
+      "txtChqNo": "5465456313248674",
+      "dtpChqDate": "2020-08-27T09:32:00.000Z",
+      "cboFPeriod": "None",
+      "txtVDesc": "DBBL",
+      "cboACode": "010200100010001",
+      "txtIDesc": "Emergency Issue of a Stuff",
+      "decDebit": "",
+      "decCredit": "15000"
+    },
+    {
+      "cboVType": "CP",
+      "dtpVDate": "2020-08-05T09:32:00.000Z",
+      "cboCSCode": "2115004",
+      "txtChqNo": "5465456313248674",
+      "dtpChqDate": "2020-08-27T09:32:00.000Z",
+      "cboFPeriod": "None",
+      "txtVDesc": "DBBL",
+      "key": "b320a0f3-47b8-4e63-838d-223b8fd3fddb",
+      "cboACode": "020300100040001",
+      "txtIDesc": "Software Sell",
+      "decDebit": "9400",
+      "decCredit": ""
+    }
+  ]
+}

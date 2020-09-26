@@ -11,10 +11,16 @@ const fetchControl: RequestHandler<params> = async (req, res) => {
     const { error } = validate(req.params);
     if(error) return res.status(400).send(error.details[0].message);
 
-    let data: fetchedControl = await getControls('0010', '0100', req.params.menuParams);
+    let MenuParams: string = req.params.menuParams + req.body.tabParams;
+    console.log(MenuParams)
+    if(req.body.tabParams){
+        MenuParams= req.params.menuParams + req.body.tabParams
+    }
 
+    let data: fetchedControl = await getControls('0010', '0100', MenuParams);
     if (data) {
         const controls = await data.map(async(dt) => {
+            dt.ControlName ? dt.ControlName = dt.ControlName.trim() : null;
             if (dt.ControlSQL) {
                 const placeholders = pick(dt, ['ClientCode', 'ModuleCode', 'GCode', 'GLevel', 'AType', 'ADType', 'TType', 'TDType', 'VDType', 'VType', 'ACode', 'UIType', 'ALevel', 'PCode', 'LCode' ])
 
@@ -36,7 +42,7 @@ const fetchControl: RequestHandler<params> = async (req, res) => {
 
 function validate(input: object) {
     const schema = Joi.object({
-        menuParams: Joi.string().min(3).pattern(/^[aA-zZ]+$/).required()
+        menuParams: Joi.string().min(2).pattern(/^[aA-zZ]+$/).required()
     })
     return schema.validate(input)
 }

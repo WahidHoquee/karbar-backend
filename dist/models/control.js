@@ -46,7 +46,9 @@ var getControls = function (ClientCode, ModuleCode, MenuParams) { return __await
             case 0: return [4 /*yield*/, utils_1.getSqlQuery("get_Control")];
             case 1:
                 sql = _a.sent();
+                console.log(MenuParams);
                 sql = utils_1.formatSql(sql, { ClientCode: ClientCode, ModuleCode: ModuleCode, MenuParams: MenuParams });
+                console.log(sql);
                 return [4 /*yield*/, connection_1.getConnection()];
             case 2:
                 pool = _a.sent();
@@ -63,7 +65,7 @@ var getControls = function (ClientCode, ModuleCode, MenuParams) { return __await
                 return [2 /*return*/, records.recordset];
             case 6:
                 err_1 = _a.sent();
-                console.log('Cant retrieve data');
+                console.log(err_1);
                 return [2 /*return*/, null];
             case 7: return [3 /*break*/, 9];
             case 8: return [2 /*return*/, null];

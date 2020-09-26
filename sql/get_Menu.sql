@@ -1,4 +1,4 @@
-SELECT DISTINCT ACode,ClientCode,ModuleCode,GCode,GLevel,AHead,MenuType,MenuParams,IconName,DisplayField 
+SELECT DISTINCT ACode,ClientCode,ModuleCode,GCode,GLevel,AHead,MenuType,MenuParams,MenuButton,TabButton,IconName,DisplayField 
 FROM dbo.vDMenu_Data 
 WHERE 
 ClientCode = @ClientCode AND 

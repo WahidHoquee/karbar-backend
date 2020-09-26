@@ -36,20 +36,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.fetchMenu = void 0;
-var menu_1 = require("../models/menu");
-var fetchMenu = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var data;
+exports.mailSender = void 0;
+// import { dMenu, getMenu } from "../models/menu";
+// type fetchedControl = dMenu[] | null;
+var mailSender = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, menu_1.getMenu("0010", "0100", "WA")];
-            case 1:
-                data = _a.sent();
-                if (data) {
-                    res.status(200).json(data);
-                }
-                return [2 /*return*/];
-        }
+        console.log(req.body.emails);
+        return [2 /*return*/];
     });
 }); };
-exports.fetchMenu = fetchMenu;
+exports.mailSender = mailSender;

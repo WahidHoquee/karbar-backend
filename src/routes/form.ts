@@ -1,22 +1,23 @@
 import { Router } from "express";
 import { fetchControl } from '../controllers/control'
+import { postForm } from '../controllers/form'
 // const formPostController = require('../controllers/formPost');
 // const reportController = require('../controllers/report');
 
 const form = Router();
 
 /**
-    - GET -> /api/form/[menuParams]
+    - Post -> /api/form/[menuParams]
     - To fetch all the controls of the form
 */
-form.get('/:menuParams',fetchControl);
+form.post('/:menuParams',fetchControl);
 
 
 /**
     - POST -> /api/form
     - To post the data to the Database
 */
-// form.post('/',formPostController.postForm);
+form.post('/',postForm);
 
 
 /**

@@ -22,14 +22,14 @@ const getMenu = async(ClientCode: string, ModuleCode: string, MenuType: string) 
   const pool: ConnectionPool | null = await getConnection();
   if(pool){
     const request: Request = await pool.request();
-    try{
+    // try{
       let records: records<dMenu> = await request.query(sql);
       return records.recordset;
-    }
-    catch(err){
-      console.log('Cant retrieve data')
-      return null;
-    }
+    // }
+    // catch(err){
+    //   console.log('Cant retrieve data')
+    //   return null;
+    // }
   }
   else{
     return null;

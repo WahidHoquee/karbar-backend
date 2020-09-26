@@ -44,14 +44,19 @@ var joi_1 = __importDefault(require("@hapi/joi"));
 var lodash_1 = require("lodash");
 var control_1 = require("../models/control");
 var fetchControl = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var error, data, controls;
+    var error, MenuParams, data, controls;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 error = validate(req.params).error;
                 if (error)
                     return [2 /*return*/, res.status(400).send(error.details[0].message)];
-                return [4 /*yield*/, control_1.getControls('0010', '0100', req.params.menuParams)];
+                MenuParams = req.params.menuParams + req.body.tabParams;
+                console.log(MenuParams);
+                if (req.body.tabParams) {
+                    MenuParams = req.params.menuParams + req.body.tabParams;
+                }
+                return [4 /*yield*/, control_1.getControls('0010', '0100', MenuParams)];
             case 1:
                 data = _a.sent();
                 if (!data) return [3 /*break*/, 4];
@@ -60,6 +65,7 @@ var fetchControl = function (req, res) { return __awaiter(void 0, void 0, void 0
                         return __generator(this, function (_a) {
                             switch (_a.label) {
                                 case 0:
+                                    dt.ControlName ? dt.ControlName = dt.ControlName.trim() : null;
                                     if (!dt.ControlSQL) return [3 /*break*/, 2];
                                     placeholders = lodash_1.pick(dt, ['ClientCode', 'ModuleCode', 'GCode', 'GLevel', 'AType', 'ADType', 'TType', 'TDType', 'VDType', 'VType', 'ACode', 'UIType', 'ALevel', 'PCode', 'LCode']);
                                     return [4 /*yield*/, control_1.getSubControls(dt.ControlSQL, placeholders)];
@@ -91,7 +97,7 @@ var fetchControl = function (req, res) { return __awaiter(void 0, void 0, void 0
 exports.fetchControl = fetchControl;
 function validate(input) {
     var schema = joi_1.default.object({
-        menuParams: joi_1.default.string().min(3).pattern(/^[aA-zZ]+$/).required()
+        menuParams: joi_1.default.string().min(2).pattern(/^[aA-zZ]+$/).required()
     });
     return schema.validate(input);
 }

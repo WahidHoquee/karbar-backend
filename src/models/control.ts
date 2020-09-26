@@ -32,8 +32,9 @@ export interface dControl {
 
 const getControls = async(ClientCode: string, ModuleCode: string, MenuParams: string) : Promise<dControl[] | null> => {
   let sql = await getSqlQuery("get_Control");
+  console.log(MenuParams)
   sql = formatSql(sql, { ClientCode, ModuleCode, MenuParams })
-  
+  console.log(sql)
   const pool: ConnectionPool | null = await getConnection();
   if(pool){
     const request: Request = await pool.request();
@@ -42,7 +43,7 @@ const getControls = async(ClientCode: string, ModuleCode: string, MenuParams: st
       return records.recordset;
     }
     catch(err){
-      console.log('Cant retrieve data')
+      console.log(err)
       return null;
     }
   }

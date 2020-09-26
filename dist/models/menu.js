@@ -40,7 +40,7 @@ exports.getMenu = void 0;
 var utils_1 = require("../utils");
 var connection_1 = require("../database/connection");
 var getMenu = function (ClientCode, ModuleCode, MenuType) { return __awaiter(void 0, void 0, void 0, function () {
-    var sql, pool, request, records, err_1;
+    var sql, pool, request, records;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, utils_1.getSqlQuery('get_Menu')];
@@ -50,24 +50,15 @@ var getMenu = function (ClientCode, ModuleCode, MenuType) { return __awaiter(voi
                 return [4 /*yield*/, connection_1.getConnection()];
             case 2:
                 pool = _a.sent();
-                if (!pool) return [3 /*break*/, 8];
+                if (!pool) return [3 /*break*/, 5];
                 return [4 /*yield*/, pool.request()];
             case 3:
                 request = _a.sent();
-                _a.label = 4;
-            case 4:
-                _a.trys.push([4, 6, , 7]);
                 return [4 /*yield*/, request.query(sql)];
-            case 5:
+            case 4:
                 records = _a.sent();
                 return [2 /*return*/, records.recordset];
-            case 6:
-                err_1 = _a.sent();
-                console.log('Cant retrieve data');
-                return [2 /*return*/, null];
-            case 7: return [3 /*break*/, 9];
-            case 8: return [2 /*return*/, null];
-            case 9: return [2 /*return*/];
+            case 5: return [2 /*return*/, null];
         }
     });
 }); };
