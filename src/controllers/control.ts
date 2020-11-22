@@ -14,8 +14,9 @@ const fetchControl: RequestHandler<params> = async (req, res) => {
     //* Prev State =>  let MenuParams: string = req.params.menuParams + req.body.tabParams;+
     let MenuParams: string = req.params.menuParams;
 
+    console.log(MenuParams)
     if(req.body.tabParams){
-        MenuParams= req.params.menuParams + req.body.tabParams
+        MenuParams = req.params.menuParams + req.body.tabParams
     }
 
     let data: fetchedControl = await getControls('0010', '0100', MenuParams);
