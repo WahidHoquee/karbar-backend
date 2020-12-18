@@ -32,18 +32,34 @@ export interface dControl {
 
 const getControls = async(ClientCode: string, ModuleCode: string, MenuParams: string) : Promise<dControl[] | null> => {
   let sql = await getSqlQuery("get_Control");
-  console.log(MenuParams)
   sql = formatSql(sql, { ClientCode, ModuleCode, MenuParams })
+
+  console.log('')
   console.log(sql)
+  console.log('')
+  console.log('-----------------------------------------------------------------------------------------------------------');
+  console.log('-----------------------------------------------------------------------------------------------------------');
+  console.log('')
+
   const pool: ConnectionPool | null = await getConnection();
   if(pool){
     const request: Request = await pool.request();
     try{
       let records: records<dControl> = await request.query(sql);
+      console.log('Successfully Executed the Control SQL Query of " ' + MenuParams + ' "')
+      console.log('')
+      console.log('***********************************************************************************************************');
+      console.log('Control Params SQL => ')
+      console.log('')
       return records.recordset;
     }
     catch(err){
+      console.log('Error in executing the Control SQL Query of " ' + MenuParams + ' "')
       console.log(err)
+      console.log('')
+      console.log('***********************************************************************************************************');
+      console.log('Control Params SQL => ')
+      console.log('')
       return null;
     }
   }
@@ -58,8 +74,12 @@ export interface dControlParams{
   [key: string]: string | number | null
 }
 
-const getSubControls = async(query: string, placeholders: placeholders): Promise<[string, dControlParams[]] | undefined> => {
-  let sql = formatSql(query, placeholders);
+const getSubControls = async(controlName:string, sql: string, placeholders: placeholders): Promise<[string, dControlParams[]] | undefined> => {
+  // console.log(placeholders)
+  // let sql = formatSql(query, placeholders);
+  
+  console.log(controlName + ': ' + sql)
+  console.log('')
 
   const pool = await getConnection();
   if(pool){
@@ -70,7 +90,11 @@ const getSubControls = async(query: string, placeholders: placeholders): Promise
       return [ sql, records.recordset ] ;
     }
     catch(err){
-      console.log('Cant retrieve data')
+      //! If the SQL Query is alright, But still we cant retrive the data then we should uncomment the following Console log's
+      // console.log('-----------------------------------------------------------------------------------------------------------');
+      // console.log('Error in executing the Control Params SQL Query of " ' + controlName + ' "')
+      // console.log(err)
+      // console.log('')
     }
   }
 }

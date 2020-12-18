@@ -5,16 +5,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 require('express-async-errors');
+require('pretty-error').start();
 var body_parser_1 = __importDefault(require("body-parser"));
 var helmet_1 = __importDefault(require("helmet"));
 var compression_1 = __importDefault(require("compression"));
 var morgan_1 = __importDefault(require("morgan"));
-var cors_1 = __importDefault(require("cors"));
 var menu_1 = __importDefault(require("./routes/menu"));
 var form_1 = __importDefault(require("./routes/form"));
 var users_1 = __importDefault(require("./routes/users"));
 var auth_1 = __importDefault(require("./routes/auth"));
 var settings_1 = __importDefault(require("./routes/settings"));
+var cors_1 = __importDefault(require("./middlewares/cors"));
 // winston.add(winston.transports.File, { filename: "logfile.log" });
 // const winston = require('winston')
 // const logger = winston.createLogger({
@@ -37,9 +38,7 @@ app.use(body_parser_1.default.json());
 app.use(helmet_1.default());
 app.use(compression_1.default());
 app.use(morgan_1.default('dev'));
-app.use(cors_1.default({
-    origin: 'https://karbar.herokuapp.com'
-}));
+app.use(cors_1.default);
 app.use('/api/auth', auth_1.default);
 app.use('/api/users', users_1.default);
 app.use('/api/settings', settings_1.default);
@@ -47,4 +46,6 @@ app.use('/api/settings', settings_1.default);
 app.use('/api/menu', menu_1.default);
 app.use('/api/form', form_1.default);
 // app.use(errorHandler);
-app.listen(process.env.PORT || 8080);
+app.listen(process.env.PORT || 8080, function () {
+    console.log('App started at PORT=' + process.env.PORT || 8080);
+});

@@ -43,6 +43,7 @@ exports.fetchControl = void 0;
 var joi_1 = __importDefault(require("@hapi/joi"));
 var lodash_1 = require("lodash");
 var control_1 = require("../models/control");
+var utils_1 = require("../utils");
 var fetchControl = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var error, MenuParams, data, controls;
     return __generator(this, function (_a) {
@@ -52,7 +53,9 @@ var fetchControl = function (req, res) { return __awaiter(void 0, void 0, void 0
                 if (error)
                     return [2 /*return*/, res.status(400).send(error.details[0].message)];
                 MenuParams = req.params.menuParams;
-                console.log(MenuParams);
+                console.log('');
+                console.log('===============================================================================================================');
+                console.log('Control SQL => ' + MenuParams);
                 if (req.body.tabParams) {
                     MenuParams = req.params.menuParams + req.body.tabParams;
                 }
@@ -61,14 +64,16 @@ var fetchControl = function (req, res) { return __awaiter(void 0, void 0, void 0
                 data = _a.sent();
                 if (!data) return [3 /*break*/, 4];
                 return [4 /*yield*/, data.map(function (dt) { return __awaiter(void 0, void 0, void 0, function () {
-                        var placeholders, records;
+                        var placeholders, sql, records;
                         return __generator(this, function (_a) {
                             switch (_a.label) {
                                 case 0:
                                     dt.ControlName ? dt.ControlName = dt.ControlName.trim() : null;
-                                    if (!dt.ControlSQL) return [3 /*break*/, 2];
+                                    if (!(dt.ControlName && dt.ControlSQL)) return [3 /*break*/, 2];
                                     placeholders = lodash_1.pick(dt, ['ClientCode', 'ModuleCode', 'GCode', 'GLevel', 'AType', 'ADType', 'TType', 'TDType', 'VDType', 'VType', 'ACode', 'UIType', 'ALevel', 'PCode', 'LCode']);
-                                    return [4 /*yield*/, control_1.getSubControls(dt.ControlSQL, placeholders)];
+                                    sql = utils_1.formatSql(dt.ControlSQL, placeholders);
+                                    dt.ControlSQL = sql;
+                                    return [4 /*yield*/, control_1.getSubControls(dt.ControlName, sql, placeholders)];
                                 case 1:
                                     records = _a.sent();
                                     if (records) {
@@ -85,10 +90,20 @@ var fetchControl = function (req, res) { return __awaiter(void 0, void 0, void 0
                 return [4 /*yield*/, Promise.all(controls)];
             case 3:
                 data = _a.sent();
+                console.log('');
+                console.log('===============================================================================================================');
+                console.log('');
+                console.log('');
+                console.log('');
                 res.status(200).json(data);
                 return [3 /*break*/, 5];
             case 4:
-                res.status(404).send("Cant retrieve data");
+                console.log("Cant retrieve data of Menuparams: " + req.params.menuParams);
+                console.log('===============================================================================================================');
+                console.log('');
+                console.log('');
+                console.log('');
+                res.status(404).send("Cant retrieve data of Menuparams: " + req.params.menuParams);
                 _a.label = 5;
             case 5: return [2 /*return*/];
         }

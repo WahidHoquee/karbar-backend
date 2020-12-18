@@ -46,9 +46,13 @@ var getControls = function (ClientCode, ModuleCode, MenuParams) { return __await
             case 0: return [4 /*yield*/, utils_1.getSqlQuery("get_Control")];
             case 1:
                 sql = _a.sent();
-                console.log(MenuParams);
                 sql = utils_1.formatSql(sql, { ClientCode: ClientCode, ModuleCode: ModuleCode, MenuParams: MenuParams });
+                console.log('');
                 console.log(sql);
+                console.log('');
+                console.log('-----------------------------------------------------------------------------------------------------------');
+                console.log('-----------------------------------------------------------------------------------------------------------');
+                console.log('');
                 return [4 /*yield*/, connection_1.getConnection()];
             case 2:
                 pool = _a.sent();
@@ -62,10 +66,20 @@ var getControls = function (ClientCode, ModuleCode, MenuParams) { return __await
                 return [4 /*yield*/, request.query(sql)];
             case 5:
                 records = _a.sent();
+                console.log('Successfully Executed the Control SQL Query of " ' + MenuParams + ' "');
+                console.log('');
+                console.log('***********************************************************************************************************');
+                console.log('Control Params SQL => ');
+                console.log('');
                 return [2 /*return*/, records.recordset];
             case 6:
                 err_1 = _a.sent();
+                console.log('Error in executing the Control SQL Query of " ' + MenuParams + ' "');
                 console.log(err_1);
+                console.log('');
+                console.log('***********************************************************************************************************');
+                console.log('Control Params SQL => ');
+                console.log('');
                 return [2 /*return*/, null];
             case 7: return [3 /*break*/, 9];
             case 8: return [2 /*return*/, null];
@@ -74,12 +88,15 @@ var getControls = function (ClientCode, ModuleCode, MenuParams) { return __await
     });
 }); };
 exports.getControls = getControls;
-var getSubControls = function (query, placeholders) { return __awaiter(void 0, void 0, void 0, function () {
-    var sql, pool, request, records, err_2;
+var getSubControls = function (controlName, sql, placeholders) { return __awaiter(void 0, void 0, void 0, function () {
+    var pool, request, records, err_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                sql = utils_1.formatSql(query, placeholders);
+                // console.log(placeholders)
+                // let sql = formatSql(query, placeholders);
+                console.log(controlName + ': ' + sql);
+                console.log('');
                 return [4 /*yield*/, connection_1.getConnection()];
             case 1:
                 pool = _a.sent();
@@ -96,7 +113,6 @@ var getSubControls = function (query, placeholders) { return __awaiter(void 0, v
                 return [2 /*return*/, [sql, records.recordset]];
             case 5:
                 err_2 = _a.sent();
-                console.log('Cant retrieve data');
                 return [3 /*break*/, 6];
             case 6: return [2 /*return*/];
         }

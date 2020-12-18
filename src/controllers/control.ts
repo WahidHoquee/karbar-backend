@@ -3,6 +3,8 @@ import { RequestHandler } from "express";
 import { pick } from 'lodash';
 
 import { dControl, getControls, getSubControls } from "../models/control";
+import { formatSql } from '../utils'
+
 
 type fetchedControl = dControl[] | null;
 type params = { menuParams: string }
@@ -14,7 +16,10 @@ const fetchControl: RequestHandler<params> = async (req, res) => {
     //* Prev State =>  let MenuParams: string = req.params.menuParams + req.body.tabParams;+
     let MenuParams: string = req.params.menuParams;
 
-    console.log(MenuParams)
+    console.log('')
+    console.log('===============================================================================================================');
+    console.log('Control SQL => ' + MenuParams);
+
     if(req.body.tabParams){
         MenuParams = req.params.menuParams + req.body.tabParams
     }
@@ -23,10 +28,15 @@ const fetchControl: RequestHandler<params> = async (req, res) => {
     if (data) {
         const controls = await data.map(async(dt) => {
             dt.ControlName ? dt.ControlName = dt.ControlName.trim() : null;
-            if (dt.ControlSQL) {
+            if (dt.ControlName && dt.ControlSQL) {
                 const placeholders = pick(dt, ['ClientCode', 'ModuleCode', 'GCode', 'GLevel', 'AType', 'ADType', 'TType', 'TDType', 'VDType', 'VType', 'ACode', 'UIType', 'ALevel', 'PCode', 'LCode' ])
 
-                const records = await getSubControls(dt.ControlSQL, placeholders)
+                //Mutating the value of ControlSQL after replacing its Placeholder property
+                let sql = formatSql(dt.ControlSQL, placeholders);
+                dt.ControlSQL = sql;
+
+                // const records = await getSubControls(dt.ControlName, dt.ControlSQL, placeholders)
+                const records = await getSubControls(dt.ControlName, sql, placeholders)
                 if(records){
                     dt.ControlSQL = records[0];
                     dt.Params = records[1]
@@ -35,10 +45,21 @@ const fetchControl: RequestHandler<params> = async (req, res) => {
             return dt;
         });
         data = await Promise.all(controls);
+        console.log('')
+        console.log('===============================================================================================================');
+        console.log('')
+        console.log('')
+        console.log('')    
         res.status(200).json(data);
     } 
     else {
-        res.status(404).send("Cant retrieve data");
+        console.log("Cant retrieve data of Menuparams: " + req.params.menuParams)
+        console.log('===============================================================================================================');
+        console.log('')
+        console.log('')
+        console.log('')    
+        
+        res.status(404).send("Cant retrieve data of Menuparams: " + req.params.menuParams);
     }
 };
 

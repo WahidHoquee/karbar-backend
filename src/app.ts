@@ -1,11 +1,11 @@
 import express from 'express';
 require('express-async-errors');
+require('pretty-error').start();
 
 import bodyParser from 'body-parser';
 import helmet from 'helmet';
 import compression from 'compression';
 import morgan from 'morgan';
-import cors from 'cors'
 
 import menuRoute from './routes/menu';
 import formRoute from './routes/form';
@@ -13,7 +13,7 @@ import usersRoute from './routes/users';
 import authRoute from './routes/auth';
 import settingsRoute from './routes/settings';
 
-// import cors from './middlewares/cors';
+import cors from './middlewares/cors';
 import authenticate from './middlewares/auth';
 import errorHandler from './middlewares/error';
 
@@ -48,9 +48,7 @@ app.use(compression());
 
 app.use(morgan('dev'))
 
-app.use(cors({
-  origin: 'https://karbar.herokuapp.com'
-}));
+app.use(cors);
 
 app.use('/api/auth', authRoute);
 app.use('/api/users', usersRoute);
@@ -64,4 +62,6 @@ app.use('/api/form', formRoute);
 
 // app.use(errorHandler);
 
-app.listen(process.env.PORT || 8080);
+app.listen(process.env.PORT || 8080, () => {
+  console.log('App started at PORT=' + process.env.PORT || 8080)
+});
