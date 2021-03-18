@@ -13,6 +13,8 @@ const {
 	SQL_USER,
 	SQL_PASSWORD,
 	SQL_PORT,
+	CLIENT_CODE,
+	MODULE_CODE
 } = process.env;
 
 // Checking if the following values are available with the error messages,if they are not available
@@ -24,7 +26,7 @@ assert(SQL_PASSWORD, "SQL_PASSWORD configuration is required.");
 // assert(SQL_PORT, "SQL_PORT configuration is required.");
 
 module.exports = {
-	port: PORT,
+	PORT: PORT,
 	sql: {
 		server: SQL_SERVER,
 		database: SQL_DATABASE,
@@ -32,5 +34,9 @@ module.exports = {
 		password: SQL_PASSWORD,
 		encrypt: true
 		// port: parseInt(SQL_PORT),
+	},
+	user: {
+		CLIENT_CODE: CLIENT_CODE,
+		MODULE_CODE: MODULE_CODE
 	}
 };

@@ -1,3 +1,5 @@
+const config = require('../config');
+
 import Joi from '@hapi/joi';
 import { RequestHandler } from "express";
 import { pick } from 'lodash';
@@ -24,7 +26,7 @@ const fetchControl: RequestHandler<params> = async (req, res) => {
         MenuParams = req.params.menuParams + req.body.tabParams
     }
 
-    let data: fetchedControl = await getControls('0010', '0100', MenuParams);
+    let data: fetchedControl = await getControls(config.user.CLIENT_CODE, config.user.MODULE_CODE, MenuParams);
     if (data) {
         const controls = await data.map(async(dt) => {
             dt.ControlName ? dt.ControlName = dt.ControlName.trim() : null;

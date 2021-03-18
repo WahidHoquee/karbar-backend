@@ -12,6 +12,9 @@ var getSqlQuery = function (fileName, subPath) {
 exports.getSqlQuery = getSqlQuery;
 var formatSql = function (sql, placeholders) {
     for (var key in placeholders) {
+        if (placeholders[key] == null) {
+            placeholders[key] = '';
+        }
         sql = sql.replace("@" + key, "'" + placeholders[key] + "'");
     }
     return sql;

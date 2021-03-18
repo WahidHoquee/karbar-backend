@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 require('express-async-errors');
 require('pretty-error').start();
+var config = require("./config");
 var body_parser_1 = __importDefault(require("body-parser"));
 var helmet_1 = __importDefault(require("helmet"));
 var compression_1 = __importDefault(require("compression"));
@@ -46,6 +47,18 @@ app.use('/api/settings', settings_1.default);
 app.use('/api/menu', menu_1.default);
 app.use('/api/form', form_1.default);
 // app.use(errorHandler);
-app.listen(process.env.PORT || 8080, function () {
-    console.log('App started at PORT=' + process.env.PORT || 8080);
+app.listen(config.PORT || 8080, function () {
+    console.log('App started at PORT=' + config.PORT || 8080);
+    console.log('');
+    console.log('CONFIGURATION INFORMATION:');
+    var configInfo = {
+        DB_SERVER: config.sql.server,
+        DB_DATABASE: config.sql.database,
+        CLIENT_CODE: config.user.CLIENT_CODE,
+        MODULE_CODE: config.user.MODULE_CODE,
+    };
+    console.log(configInfo);
+    console.log('');
+    console.log('<<<<<<<<<<<<<<<<<<<<-------------------------------------------------------------------->>>>>>>>>>>>>>>>>>');
+    console.log('');
 });

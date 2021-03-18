@@ -1,6 +1,7 @@
 import express from 'express';
 require('express-async-errors');
 require('pretty-error').start();
+const config = require("./config");
 
 import bodyParser from 'body-parser';
 import helmet from 'helmet';
@@ -62,6 +63,19 @@ app.use('/api/form', formRoute);
 
 // app.use(errorHandler);
 
-app.listen(process.env.PORT || 8080, () => {
-  console.log('App started at PORT=' + process.env.PORT || 8080)
+app.listen(config.PORT || 8080, () => {
+  console.log('App started at PORT=' + config.PORT || 8080);
+  console.log('')
+
+  console.log('CONFIGURATION INFORMATION:')
+  const configInfo = {
+    DB_SERVER: config.sql.server,
+    DB_DATABASE: config.sql.database,
+    CLIENT_CODE: config.user.CLIENT_CODE,
+    MODULE_CODE: config.user.MODULE_CODE,
+  }
+  console.log(configInfo);
+  console.log('')
+  console.log('<<<<<<<<<<<<<<<<<<<<-------------------------------------------------------------------->>>>>>>>>>>>>>>>>>');
+  console.log('')
 });

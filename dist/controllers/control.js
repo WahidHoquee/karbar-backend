@@ -40,6 +40,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.fetchControl = void 0;
+var config = require('../config');
 var joi_1 = __importDefault(require("@hapi/joi"));
 var lodash_1 = require("lodash");
 var control_1 = require("../models/control");
@@ -59,7 +60,7 @@ var fetchControl = function (req, res) { return __awaiter(void 0, void 0, void 0
                 if (req.body.tabParams) {
                     MenuParams = req.params.menuParams + req.body.tabParams;
                 }
-                return [4 /*yield*/, control_1.getControls('0010', '0100', MenuParams)];
+                return [4 /*yield*/, control_1.getControls(config.user.CLIENT_CODE, config.user.MODULE_CODE, MenuParams)];
             case 1:
                 data = _a.sent();
                 if (!data) return [3 /*break*/, 4];

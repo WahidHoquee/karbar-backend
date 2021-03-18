@@ -37,12 +37,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.fetchMenu = void 0;
+var config = require('../config');
 var menu_1 = require("../models/menu");
 var fetchMenu = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var data;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, menu_1.getMenu("0010", "0100", "WA")];
+            case 0: return [4 /*yield*/, menu_1.getMenu(config.user.CLIENT_CODE, config.user.MODULE_CODE, "WA")];
             case 1:
                 data = _a.sent();
                 if (data) {

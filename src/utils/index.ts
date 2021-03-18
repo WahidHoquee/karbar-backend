@@ -11,6 +11,9 @@ const getSqlQuery = (fileName: string, subPath: string = ''): string => {
 
 const formatSql = (sql: string, placeholders: placeholders): string => {
     for(let key in placeholders){
+        if(placeholders[key] == null){
+            placeholders[key] = ''
+        }
         sql = sql.replace( `@${key}`, `'${placeholders[key]}'` )
     }
     return sql;
